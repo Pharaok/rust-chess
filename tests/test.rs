@@ -2,7 +2,7 @@ use chess::board::Board;
 
 #[test]
 fn test() {
-    let board = Board::new();
+    let mut board = Board::new();
     println!("{:?}", board);
     panic!();
 }
