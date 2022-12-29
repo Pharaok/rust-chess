@@ -1,8 +1,9 @@
-use chess::board::Board;
+use chess::{board::Board, r#move::Move};
 
 #[test]
 fn test() {
     let mut board = Board::new();
-    println!("{:?} {:?}", board, board.piece_at(0, 0));
+    board.make_move(Move { from: 12, to: 28 }).unwrap();
+    println!("{:?}", board);
     panic!();
 }
