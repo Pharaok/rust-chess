@@ -71,9 +71,9 @@ impl Board {
 
     pub fn make_move(&mut self, r#move: Move) -> Result<(), ()> {
         if let Some(piece) = self.piece_at(r#move.from) {
-            if let Some(captered_piece) = self.piece_at(r#move.to) {
-                self.bitboards[captered_piece] ^= 1 << r#move.to.0;
-                self.bitboards[captered_piece % 2] ^= 1 << r#move.to.0;
+            if let Some(captured_piece) = self.piece_at(r#move.to) {
+                self.bitboards[captured_piece] ^= 1 << r#move.to.0;
+                self.bitboards[captured_piece % 2] ^= 1 << r#move.to.0;
             }
             self.bitboards[piece] ^= 1 << r#move.from.0 | 1 << r#move.to.0;
             self.bitboards[piece % 2] ^= 1 << r#move.from.0 | 1 << r#move.to.0;
