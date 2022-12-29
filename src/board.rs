@@ -1,4 +1,4 @@
-use crate::r#move::Move;
+use crate::{r#move::Move, square::Square};
 
 #[derive(Debug)]
 pub struct Board {
@@ -59,10 +59,10 @@ impl Board {
         Ok(())
     }
 
-    pub fn piece_at(&self, square: u32) -> Option<usize> {
+    pub fn piece_at(&self, square: Square) -> Option<usize> {
         // skip the color bitboards
         for (piece_type, bitboard) in self.bitboards.iter().enumerate().skip(2) {
-            if bitboard & 1 << square != 0 {
+            if bitboard & 1 << square.0 != 0 {
                 return Some(piece_type);
             }
         }
@@ -72,11 +72,11 @@ impl Board {
     pub fn make_move(&mut self, r#move: Move) -> Result<(), ()> {
         if let Some(piece) = self.piece_at(r#move.from) {
             if let Some(captered_piece) = self.piece_at(r#move.to) {
-                self.bitboards[captered_piece] ^= 1 << r#move.to;
-                self.bitboards[captered_piece % 2] ^= 1 << r#move.to;
+                self.bitboards[captered_piece] ^= 1 << r#move.to.0;
+                self.bitboards[captered_piece % 2] ^= 1 << r#move.to.0;
             }
-            self.bitboards[piece] ^= 1 << r#move.from | 1 << r#move.to;
-            self.bitboards[piece % 2] ^= 1 << r#move.from | 1 << r#move.to;
+            self.bitboards[piece] ^= 1 << r#move.from.0 | 1 << r#move.to.0;
+            self.bitboards[piece % 2] ^= 1 << r#move.from.0 | 1 << r#move.to.0;
         } else {
             return Err(());
         }
