@@ -27,7 +27,7 @@ impl Board {
         for rank in fen.split("/") {
             let mut file_index = 0;
             for c in rank.chars() {
-                let mut piece_type = c.is_ascii_uppercase() as usize;
+                let mut piece_type = c.is_ascii_lowercase() as usize;
                 if c.is_ascii_digit() {
                     file_index += c.to_digit(10).unwrap();
                     continue;
@@ -55,5 +55,14 @@ impl Board {
         }
         *self = draft_board;
         Ok(())
+    }
+
+    pub fn piece_at(&self, file: i32, rank: i32) -> Option<usize> {
+        for (piece_type, bitboard) in self.bitboards.iter().enumerate().skip(2) {
+            if bitboard & 1 << (rank * 8 + file) != 0 {
+                return Some(piece_type);
+            }
+        }
+        None
     }
 }
