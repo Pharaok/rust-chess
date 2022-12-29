@@ -3,6 +3,9 @@ pub struct Square(pub u32);
 
 impl Square {
     pub fn from_an(an: &str) -> Result<Self, ()> {
+        if an.len() > 2 {
+            return Err(());
+        }
         let file = an
             .chars()
             .nth(0)
@@ -13,7 +16,7 @@ impl Square {
             .and_then(|c| if c.is_ascii_digit() { Some(c) } else { None })
             .and_then(|c| {
                 let r = c.to_digit(10).unwrap();
-                if 1 <= r && r < 8 {
+                if 1 <= r && r <= 8 {
                     Some(r - 1)
                 } else {
                     None
