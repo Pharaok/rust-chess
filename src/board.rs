@@ -83,4 +83,34 @@ impl Board {
 
         Ok(())
     }
+    pub fn ascii(&self) -> String {
+        let mut a = String::new();
+        for rank in (0..8).rev() {
+            for file in 0..8 {
+                let square = Square(rank * 8 + file);
+
+                a.push(' ');
+                if let Some(piece) = self.piece_at(square) {
+                    let mut c;
+                    match piece / 2 {
+                        1 => c = 'P',
+                        2 => c = 'N',
+                        3 => c = 'B',
+                        4 => c = 'R',
+                        5 => c = 'Q',
+                        6 => c = 'K',
+                        _ => panic!(),
+                    }
+                    if piece % 2 == 1 {
+                        c = c.to_ascii_lowercase();
+                    }
+                    a.push(c);
+                } else {
+                    a.push('.')
+                }
+            }
+            a.push('\n');
+        }
+        a
+    }
 }
